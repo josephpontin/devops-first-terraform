@@ -60,6 +60,12 @@ resource "aws_security_group" "allow_80" {
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["212.161.55.68/32"]
+  }
   tags = {
     Name = var.instance_name
   }
@@ -68,6 +74,7 @@ resource "aws_security_group" "allow_80" {
 # Launch an instance
 resource "aws_instance" "app_instance"{
   ami                            = var.ami_id
+  key_name                       = "joseph-eng-48-first-key"
   vpc_security_group_ids         = ["${aws_security_group.allow_80.id}"]
   subnet_id                      = aws_subnet.app_subnet.id
   instance_type                  = "t2.micro"
@@ -75,6 +82,8 @@ resource "aws_instance" "app_instance"{
   user_data                      = data.template_file.app_init.rendered
   tags                           = {Name = var.instance_name}
 }
+
+## DATA ##########################################################
 
 # Send template .sh to instance
 data "template_file" "app_init"{
