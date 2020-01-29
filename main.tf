@@ -66,6 +66,12 @@ resource "aws_security_group" "allow_80" {
     protocol  = "tcp"
     cidr_blocks = ["212.161.55.68/32"]
   }
+  ingress {
+    from_port = 3000
+    to_port   = 3000
+    protocol  = "tcp"
+    cidr_blocks = ["212.161.55.68/32"]
+  }
   tags = {
     Name = var.instance_name
   }
