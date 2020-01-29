@@ -31,7 +31,7 @@ resource "aws_route_table_association" "app_assoc"{
 }
 
 # Create security group
-resource "aws_security_group" "allow_80" {
+resource "aws_security_group" "app_sg" {
   vpc_id        = var.vpc_id
   ingress {
     from_port = 80
@@ -60,7 +60,7 @@ resource "aws_security_group" "allow_80" {
 resource "aws_instance" "app_instance"{
   ami                            = var.ami_id
   key_name                       = "joseph-eng-48-first-key"
-  vpc_security_group_ids         = ["${aws_security_group.allow_80.id}"]
+  vpc_security_group_ids         = ["${aws_security_group.app_sg.id}"]
   subnet_id                      = aws_subnet.app_subnet.id
   instance_type                  = "t2.micro"
   associate_public_ip_address    = true
