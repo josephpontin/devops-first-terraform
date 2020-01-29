@@ -23,75 +23,14 @@ resource "aws_internet_gateway" "app_gw" {
   }
 }
 
-# Create a subnet
-resource "aws_subnet" "app_subnet"{
-  vpc_id            = aws_vpc.app_vpc.id
-  cidr_block        = "10.0.0.0/24"
-  availability_zone = "eu-west-1a"
-  tags = {
-    Name = var.instance_name
-  }
-}
+# Call module to create app tier
 
-# Route Table
-resource "aws_route_table" "app_route_table"{
+module "app" {
+  source = "./modules/app_tier"
   vpc_id = aws_vpc.app_vpc.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.app_gw.id
-  }
-  tags = {
-    Name = var.instance_name
-  }
+  instance_name = var.instance_name
+  ig_id = aws_internet_gateway.app_gw.id
+  ami_id = var.ami_id
 }
 
-# Route Table Associations
-resource "aws_route_table_association" "app_assoc"{
-  subnet_id = aws_subnet.app_subnet.id
-  route_table_id = aws_route_table.app_route_table.id
-}
-
-# Create security group
-resource "aws_security_group" "allow_80" {
-  vpc_id        = aws_vpc.app_vpc.id
-  ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["212.161.55.68/32"]
-  }
-  ingress {
-    from_port = 3000
-    to_port   = 3000
-    protocol  = "tcp"
-    cidr_blocks = ["212.161.55.68/32"]
-  }
-  tags = {
-    Name = var.instance_name
-  }
-}
-
-# Launch an instance
-resource "aws_instance" "app_instance"{
-  ami                            = var.ami_id
-  key_name                       = "joseph-eng-48-first-key"
-  vpc_security_group_ids         = ["${aws_security_group.allow_80.id}"]
-  subnet_id                      = aws_subnet.app_subnet.id
-  instance_type                  = "t2.micro"
-  associate_public_ip_address    = true
-  user_data                      = data.template_file.app_init.rendered
-  tags                           = {Name = var.instance_name}
-}
-
-## DATA ##########################################################
-
-# Send template .sh to instance
-data "template_file" "app_init"{
-  template = file("./scripts/init_script.sh.tpl")
-}
+# Call module to create db tier
