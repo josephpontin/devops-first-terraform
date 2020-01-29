@@ -1,3 +1,5 @@
+# Values of these variables are set when the module is called in the main main.tf file
+
 variable "app_sg_id"{
   description = "sg id of app"
 }

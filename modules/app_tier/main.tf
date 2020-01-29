@@ -1,5 +1,4 @@
-# Main for App Tier
-# Everything that concerns app tier goes in here
+# These are the resources particular to the app tier
 
 
 # Create a subnet

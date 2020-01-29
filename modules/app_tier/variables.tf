@@ -1,3 +1,5 @@
+# Values of these variables are set when the module is called in the main main.tf file
+
 variable "vpc_id"{
   description = "the vpc id where the app is to be launched"
 }

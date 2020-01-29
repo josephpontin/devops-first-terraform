@@ -1,3 +1,5 @@
+# These are the resources particular to the db tier
+
 resource "aws_security_group" "db_sg" {
   name = var.instance_name
   description = "Allow traffic from app"

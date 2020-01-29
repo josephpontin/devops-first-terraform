@@ -23,6 +23,10 @@ resource "aws_internet_gateway" "app_gw" {
   }
 }
 
+## MODULES ######################################################
+
+# These import the modules from the ./modules folder
+
 # Call module to create app tier
 module "app" {
   source = "./modules/app_tier"
