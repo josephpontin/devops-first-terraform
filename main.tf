@@ -42,4 +42,5 @@ module "db" {
   vpc_id = aws_vpc.app_vpc.id
   instance_name = var.instance_name
   app_sg_id = module.app.app_security_group_id
+  ami_db_id = var.ami_db_id
 }

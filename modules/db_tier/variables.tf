@@ -10,3 +10,7 @@ variable "instance_name"{
 variable "vpc_id"{
   description = "the vpc id where the app is to be launched"
 }
+
+variable "ami_db_id"{
+  description = "id of the ami"
+}

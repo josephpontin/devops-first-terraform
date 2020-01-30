@@ -7,7 +7,7 @@ resource "aws_subnet" "app_subnet"{
   cidr_block        = "10.0.1.0/24"
   availability_zone = "eu-west-1a"
   tags = {
-    Name = var.instance_name
+    Name = "${var.instance_name}-app"
   }
 }
 
@@ -38,17 +38,30 @@ resource "aws_security_group" "app_sg" {
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   ingress {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = ["212.161.55.68/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 3000
     to_port   = 3000
     protocol  = "tcp"
-    cidr_blocks = ["212.161.55.68/32"]
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 27017
+    to_port   = 27017
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
     Name = var.instance_name
@@ -64,7 +77,7 @@ resource "aws_instance" "app_instance"{
   instance_type                  = "t2.micro"
   associate_public_ip_address    = true
   user_data                      = data.template_file.app_init.rendered
-  tags                           = {Name = var.instance_name}
+  tags                           = {Name = "${var.instance_name}_app"}
 }
 
 ## DATA ##########################################################
