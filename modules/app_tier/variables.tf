@@ -14,3 +14,7 @@ variable "ig_id"{
 variable "ami_id"{
   description = "id of the ami"
 }
+
+variable "db_instance_ip"{
+  description = "db instance ip"
+}

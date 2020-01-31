@@ -12,4 +12,4 @@ In our stack, we have:
 
 # To run
 
-Use `terraform init` and `terraform apply`. SSH into the app and set an environment variable with `export DB_HOST=mongodb://<db_ip>:27017/posts`. `cd` into `home/ubuntu/app`. Run `sudo npm install ejs express mongoose`. Run `node app.js`
+Use `terraform init` and `terraform apply`. The app is now running on the public ip.

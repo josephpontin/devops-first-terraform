@@ -34,6 +34,7 @@ module "app" {
   instance_name = var.instance_name
   ig_id = aws_internet_gateway.app_gw.id
   ami_id = var.ami_id
+  db_instance_ip = module.db.db_instance_ip
 }
 
 # Call module to create db tier
